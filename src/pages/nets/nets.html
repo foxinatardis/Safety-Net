@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Safety Nets</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>Manage Your Safety Nets</h2>
+  <ion-list no-lines>
+      <button ion-item (click)="displayEditNetPopover(netService.createNewSafetyNet())">
+          Add New Net
+      </button>
+      <button ion-item *ngFor="let net of netService.savedNets" (click)="displayEditNetPopover(net)">
+          {{net.name}}
+      </button>
+  </ion-list>
+</ion-content>

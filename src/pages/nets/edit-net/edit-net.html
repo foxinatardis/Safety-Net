@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons>
+            <button ion-button icon-only color="dark" (click)="close()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Edit Net</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only color="dark" (click)="saveNet()">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label>Net Name: </ion-label>
+        <ion-input type="text" [(ngModel)]="netService.selectedNet.name"></ion-input>
+    </ion-item>
+    <ion-list no-lines>
+        <ion-list-header>Selected Contacts</ion-list-header>
+        <button ion-item (click)="displayAddContactsModal()">
+            Edit Selected Contacts
+        </button>
+        <button ion-item *ngFor="let contact of netService.selectedNet.displayedContacts">
+            {{contact.name}}
+        </button>
+    </ion-list>
+</ion-content>
