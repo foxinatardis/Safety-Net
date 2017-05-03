@@ -11,7 +11,7 @@ export class NetService {
 
 
     constructor(
-        public storage: Storage
+        private storage: Storage
     ) {
         this.storage.ready().then(() => {
             this.retrieveSavedNets();

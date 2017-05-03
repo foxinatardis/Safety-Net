@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 //  Services
 import { NetService } from '../services/net.service';
 import { ContactsService } from '../services/contacts.service';
+import { MessagesService } from '../services/messages.service';
 // App
 import { MyApp } from './app.component';
 // Pages and Views
@@ -22,6 +23,7 @@ import { AddContactsView } from '../pages/nets/add-contacts/add-contacts';
 import { TimerPage } from '../pages/timer/timer';
 
 import { MessagesPage } from '../pages/messages/messages';
+import { EditMessageView } from '../pages/messages/messages/edit-message/edit-message';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { MessagesPage } from '../pages/messages/messages';
     AddContactsView,
     TimerPage,
     MessagesPage,
+    EditMessageView,
     TabsPage
   ],
   imports: [
@@ -48,11 +51,13 @@ import { MessagesPage } from '../pages/messages/messages';
     AddContactsView,
     TimerPage,
     MessagesPage,
+    EditMessageView,
     TabsPage
   ],
   providers: [
     NetService,
     ContactsService,
+    MessagesService,
     Contacts,
     StatusBar,
     SplashScreen,

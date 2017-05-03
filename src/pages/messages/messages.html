@@ -7,5 +7,9 @@
 </ion-header>
 
 <ion-content padding>
-
+    <ion-list>
+        <div *ngFor="let message of messageService.customMessages">
+            <ion-item>{{message.title}}</ion-item>
+        </div>
+    </ion-list>
 </ion-content>

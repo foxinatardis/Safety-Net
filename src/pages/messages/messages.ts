@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
+import { MessagesService } from '../../services/messages.service';
+import { EditMessageView } from './edit-message/edit-message';
 
 @Component({
   selector: 'page-messages',
@@ -7,7 +9,11 @@ import { NavController } from 'ionic-angular';
 })
 export class MessagesPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(
+      public navCtrl: NavController,
+      public modalController: ModalController,
+      public messageService: MessagesService
+  ) {
 
   }
 
