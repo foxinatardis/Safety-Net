@@ -10,6 +10,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NetService } from '../services/net.service';
 import { ContactsService } from '../services/contacts.service';
 import { MessagesService } from '../services/messages.service';
+import { TimerService } from '../services/timer.service';
 // App
 import { MyApp } from './app.component';
 // Pages and Views
@@ -58,6 +59,7 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     NetService,
     ContactsService,
     MessagesService,
+    TimerService,
     Contacts,
     StatusBar,
     SplashScreen,
