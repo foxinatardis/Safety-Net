@@ -56,45 +56,42 @@ export class ContactsService {
 
     public updateWorkingContacts() {
         if(this.formattedContacts.length > 0) {
-            let workingContactIds = [];
-            let formattedContactIds = [];
-            let deadContactIds = [];
-            let updatedWorkingContacts = [];
+            let updatedWorkingContacts: Array<FormattedContact> = [];
+            let selectedPhoneNumbers: Array<string> = [];
+
             this.workingContacts.forEach((contact) => {
-                // push working contact ids to workingIds array
-                workingContactIds.push(contact.id);
-            });
-            this.formattedContacts.forEach((contact) => {
-                formattedContactIds.push(contact.id);
-                if(workingContactIds.indexOf(contact.id) === -1) {
-                    // if there is a contact in 'formattedContacts' that is not in 'workingContacts'
-                    // create a clone of the missing contact and add to the working contacts array
-                    let contactClone: FormattedContact = {
-                        id: contact.id,
-                        displayName: contact.displayName,
-                        phoneNumbers: contact.phoneNumbers,
-                        selected: false
-                    }
-                    this.workingContacts.push(contactClone);
-                }
-            });
-            for(let id of workingContactIds) {
-                // walk through workingContactIds to find contacts which have been removed from the phone
-                if(formattedContactIds.indexOf(id) === -1) {
-                    // if a contact is dead, add the id to deadContactIds
-                    deadContactIds.push(id);
-                }
-            }
-            if(deadContactIds.length > 0) {
-                this.workingContacts.forEach((contact) => {
-                    if(deadContactIds.indexOf(contact.id) === -1) {
-                        updatedWorkingContacts.push(contact);
+                contact.phoneNumbers.forEach((numberField) => {
+                    if(numberField.selected) {
+                        selectedPhoneNumbers.push(numberField.value);
                     }
                 });
-                this.workingContacts = updatedWorkingContacts;
-            }
-            console.log(this.workingContacts[0].phoneNumbers);
-            console.log();
+            });
+
+            this.formattedContacts.forEach((contact) => {
+                let contactClone: FormattedContact = {
+                    id: contact.id,
+                    displayName: contact.displayName,
+                    phoneNumbers: [],
+                    selected: false
+                };
+
+                contact.phoneNumbers.forEach((numberField) => {
+                    let numberFieldClone = {
+                        type: numberField.type,
+                        value: numberField.value,
+                        selected: false
+                    }
+                    if(selectedPhoneNumbers.indexOf(numberField.value) !== -1) {
+                        numberFieldClone.selected = true;
+                        contactClone.selected = true;
+                    }
+                    contactClone.phoneNumbers.push(numberFieldClone);
+                });
+
+                updatedWorkingContacts.push(contactClone);
+            });
+
+            this.workingContacts = updatedWorkingContacts;
         } else {
             this.getFormattedContacts().then(() => {
                 this.updateWorkingContacts();

@@ -4,14 +4,29 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Manage Your Safety Nets</h2>
-  <ion-list no-lines>
+<ion-content>
+  <h2 padding-horizontal>Manage Your Safety Nets</h2>
+  <ion-list>
       <button ion-item (click)="displayEditNetPopover(netService.createNewSafetyNet())">
           Add New Net
       </button>
-      <button ion-item *ngFor="let net of netService.savedNets" (click)="displayEditNetPopover(net)">
-          {{net.name}}
-      </button>
+      <div *ngFor="let net of netService.savedNets">
+          <ion-item-sliding>
+              <ion-item  (click)="displayEditNetPopover(net)">{{net.name}}</ion-item>
+              <ion-item-options side="right">
+                  <button ion-button color="danger" (click)="netService.deleteNet(net)">
+                      <ion-icon name="trash"></ion-icon>
+                      Delete
+                  </button>
+              </ion-item-options>
+              <ion-item-options side="left">
+                  <button ion-button color="primary" (click)="displayEditNetPopover(net)">
+                      <ion-icon name="open"></ion-icon>
+                      Edit
+                  </button>
+              </ion-item-options>
+          </ion-item-sliding>
+
+      </div>
   </ion-list>
 </ion-content>
