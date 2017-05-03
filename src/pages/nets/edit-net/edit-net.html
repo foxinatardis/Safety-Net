@@ -25,7 +25,15 @@
             Edit Selected Contacts
         </button>
         <div *ngFor="let contact of netService.selectedNet.contacts">
-            <ion-item *ngIf="contact.selected">{{contact.displayName}}</ion-item>
+            <ion-item-sliding *ngIf="contact.selected">
+                <ion-item>{{contact.displayName}}</ion-item>
+                <ion-item-options side="right">
+                    <button ion-button color="danger" (click)="removeContact(contact)">
+                        <ion-icon name="trash"></ion-icon>
+                        Remove
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
         </div>
     </ion-list>
 </ion-content>

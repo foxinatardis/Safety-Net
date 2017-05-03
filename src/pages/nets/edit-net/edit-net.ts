@@ -39,4 +39,12 @@ export class EditNetView {
         modal.present();
     }
 
+    removeContact(contact) {
+        contact.selected = false;
+        contact.phoneNumbers.forEach((numberField) => {
+            numberField.selected = false;
+        });
+        this.netService.saveSelectedNet();
+    }
+
 }
