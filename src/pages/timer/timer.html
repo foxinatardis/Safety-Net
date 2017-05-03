@@ -7,10 +7,34 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf='timerService.timerActive'>
+    <div *ngIf="timerService.timerActive">
 
     </div>
-    <div *ngIf='!timerService.timerActive'>
-
+    <div *ngIf="!timerService.timerActive">
+        <ion-item>
+            <ion-label>Safety Net</ion-label>
+            <ion-select [(ngModel)]="netService.selectedNet">
+                <div *ngFor="let net of netService.savedNets">
+                    <ion-option>{{net.name}}</ion-option>
+                </div>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Message</ion-label>
+            <ion-select [(ngModel)]="messagesService.selectedMessage">
+                <div *ngFor="let message of messagesService.customMessages">
+                    <ion-option>{{message.title}}</ion-option>
+                </div>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Timer</ion-label>
+            <ion-select [(ngModel)]="">
+                <div *ngFor="">
+                    <ion-option></ion-option>
+                </div>
+            </ion-select>
+        </ion-item>
+        <button ion-button full (click)="startTimer()">Start Timer</button>
     </div>
 </ion-content>
