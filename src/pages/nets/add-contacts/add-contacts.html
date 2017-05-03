@@ -5,19 +5,23 @@
                 <ion-icon name="close-circle"></ion-icon>
             </button>
         </ion-buttons>
-        <ion-title>Manage Contacts</ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only color="dark" (click)="saveNet()">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </button>
-        </ion-buttons>
+        <ion-title>Edit Contacts</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
     <ion-list>
         <ion-list-header>Contacts</ion-list-header>
-        <button ion-item *ngFor="let contact of contactService.rawContacts">
-            {{contact.displayName}}
-        </button>
+        <div *ngFor="let contact of contactService.workingContacts; let i = index">
+            <ion-item (click)="displayPhoneNumbers[i] = !displayPhoneNumbers[i]">
+                {{contact.displayName}}
+                <ion-icon icon-right [name]="displayPhoneNumbers[i] ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
+            </ion-item>
+            <ion-list *ngIf="displayPhoneNumbers[i]" no-lines>
+                <ion-item *ngFor="let number of contact.phoneNumbers">
+                    <ion-label>{{number.type}}: {{number.value}}</ion-label>
+                    <ion-toggle [(ngModel)]="number.selected"></ion-toggle>
+                </ion-item>
+            </ion-list>
+        </div>
     </ion-list>
 </ion-content>

@@ -8,18 +8,28 @@ export class ContactsService {
     constructor(
         private contacts: Contacts
     ) {
-        this.getAllContacts().then(() => {
-            // this.formattedContacts = this.formatContacts(this.rawContacts);
-            console.log('Raw contact 0');
-            console.log();
-            console.log(this.rawContacts[0]);
+        this.getFormattedContacts().catch((err) => {
+            console.log("Error gettign formatted contacts.");
+            console.log("error: " + err);
             console.log();
         });
     }
 
-    rawContacts: Array<Contact>;
-    formattedContacts: Array<FormattedContact>;
-    workingContacts: Array<FormattedContact>;
+    rawContacts: Array<Contact> = [];
+    formattedContacts: Array<FormattedContact> = [];
+    workingContacts: Array<FormattedContact> = [];
+
+    private getFormattedContacts() {
+        return new Promise((resolve, reject) => {
+            this.getAllContacts()
+            .then((allContacts: Array<Contact>) => {
+                this.formattedContacts = this.formatContacts(allContacts);
+                resolve();
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
 
     private getAllContacts() {
         return new Promise((resolve, reject) => {
@@ -31,10 +41,6 @@ export class ContactsService {
                     'phoneNumbers'
                 ]
             };
-            console.log('getting all contacts...');
-            console.log();
-            console.log('getting all contacts...');
-            console.log();
 
             this.contacts.find(['name'], findOptions)
             .then((allContacts) => {
@@ -49,53 +55,73 @@ export class ContactsService {
     }
 
     public updateWorkingContacts() {
-        let workingContactIds = [];
-        let formattedContactIds = [];
-        let deadContactIds = [];
-        let updatedWorkingContacts = [];
-        this.workingContacts.forEach((contact) => {
-            // push working contact ids to workingIds array
-            workingContactIds.push(contact.id);
-        });
-        this.formattedContacts.forEach((contact) => {
-            formattedContactIds.push(contact.id);
-            if(workingContactIds.indexOf(contact.id) === -1) {
-                // if there is a contact in 'formattedContacts' that is not in 'workingContacts'
-                // create a clone of the missing contact and add to the working contacts array
-                let contactClone: FormattedContact = {
-                    id: contact.id,
-                    displayName: contact.displayName,
-                    phoneNumbers: contact.phoneNumbers,
-                    selected: false
-                }
-                this.workingContacts.push(contactClone);
-            }
-        });
-        for(let id of workingContactIds) {
-            // walk through workingContactIds to find contacts which have been removed from the phone
-            if(formattedContactIds.indexOf(id) === -1) {
-                // if a contact is dead, add the id to deadContactIds
-                deadContactIds.push(id);
-            }
-        }
-        if(deadContactIds.length > 0) {
+        if(this.formattedContacts.length > 0) {
+            let workingContactIds = [];
+            let formattedContactIds = [];
+            let deadContactIds = [];
+            let updatedWorkingContacts = [];
             this.workingContacts.forEach((contact) => {
-                if(deadContactIds.indexOf(contact.id) === -1) {
-                    updatedWorkingContacts.push(contact);
+                // push working contact ids to workingIds array
+                workingContactIds.push(contact.id);
+            });
+            this.formattedContacts.forEach((contact) => {
+                formattedContactIds.push(contact.id);
+                if(workingContactIds.indexOf(contact.id) === -1) {
+                    // if there is a contact in 'formattedContacts' that is not in 'workingContacts'
+                    // create a clone of the missing contact and add to the working contacts array
+                    let contactClone: FormattedContact = {
+                        id: contact.id,
+                        displayName: contact.displayName,
+                        phoneNumbers: contact.phoneNumbers,
+                        selected: false
+                    }
+                    this.workingContacts.push(contactClone);
                 }
             });
-            this.workingContacts = updatedWorkingContacts;
+            for(let id of workingContactIds) {
+                // walk through workingContactIds to find contacts which have been removed from the phone
+                if(formattedContactIds.indexOf(id) === -1) {
+                    // if a contact is dead, add the id to deadContactIds
+                    deadContactIds.push(id);
+                }
+            }
+            if(deadContactIds.length > 0) {
+                this.workingContacts.forEach((contact) => {
+                    if(deadContactIds.indexOf(contact.id) === -1) {
+                        updatedWorkingContacts.push(contact);
+                    }
+                });
+                this.workingContacts = updatedWorkingContacts;
+            }
+            console.log(this.workingContacts[0].phoneNumbers);
+            console.log();
+        } else {
+            this.getFormattedContacts().then(() => {
+                this.updateWorkingContacts();
+            });
         }
+    }
+
+    public markWorkingContactsAsSelected() {
+        this.workingContacts.forEach((contact) => {
+            contact.selected = false;
+            for(let number of contact.phoneNumbers) {
+                if(number.selected) {
+                    contact.selected = true;
+                }
+            }
+        })
     }
 
     private formatContacts(unprocessedContacts: Array<Contact>) {
         let processedContacts: Array<FormattedContact> = [];
 
         unprocessedContacts.forEach((contact) => {
+            let formattedContactPhoneNumbers = this.formatContactPhoneNumbers(contact.phoneNumbers);
             let reformattedContact: FormattedContact = {
                 id: contact.id,
                 displayName: contact.displayName,
-                phoneNumbers: this.formatContactPhoneNumbers(contact.phoneNumbers),
+                phoneNumbers: formattedContactPhoneNumbers,
                 selected: false
             }
             processedContacts.push(reformattedContact);
