@@ -1,8 +1,18 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+// Ionic Imports
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
+import { Contacts } from '@ionic-native/contacts';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+//  Services
+import { NetService } from '../services/net.service';
+import { ContactsService } from '../services/contacts.service';
+// App
 import { MyApp } from './app.component';
+// Pages and Views
+import { TabsPage } from '../pages/tabs/tabs';
 
 import { NetsPage } from '../pages/nets/nets';
 import { EditNetView } from '../pages/nets/edit-net/edit-net';
@@ -12,13 +22,6 @@ import { AddContactsView } from '../pages/nets/add-contacts/add-contacts';
 import { TimerPage } from '../pages/timer/timer';
 
 import { MessagesPage } from '../pages/messages/messages';
-
-import { TabsPage } from '../pages/tabs/tabs';
-
-import { NetService } from '../services/net.service';
-
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   providers: [
     NetService,
+    ContactsService,
+    Contacts,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

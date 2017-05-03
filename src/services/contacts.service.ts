@@ -9,7 +9,11 @@ export class ContactsService {
         private contacts: Contacts
     ) {
         this.getAllContacts().then(() => {
-            this.formattedContacts = this.formatContacts(this.rawContacts);
+            // this.formattedContacts = this.formatContacts(this.rawContacts);
+            console.log('Raw contact 0');
+            console.log();
+            console.log(this.rawContacts[0]);
+            console.log();
         });
     }
 
@@ -18,17 +22,30 @@ export class ContactsService {
     workingContacts: Array<FormattedContact>;
 
     private getAllContacts() {
-        let findOptions = {
-            desiredFields: [
-                'id',
-                'displayName',
-                'phoneNumbers'
-            ]
-        };
+        return new Promise((resolve, reject) => {
+            let findOptions = {
+                multiple: true,
+                desiredFields: [
+                    'id',
+                    'displayName',
+                    'phoneNumbers'
+                ]
+            };
+            console.log('getting all contacts...');
+            console.log();
+            console.log('getting all contacts...');
+            console.log();
 
-        return this.contacts.find([], findOptions).then((allContacts) => {
-            this.rawContacts = allContacts;
-        });
+            this.contacts.find(['name'], findOptions)
+            .then((allContacts) => {
+                this.rawContacts = allContacts;
+
+                console.log('allContacts: ', allContacts);
+                resolve(allContacts);
+            }).catch((err) => {
+                reject(err);
+            });
+        })
     }
 
     public updateWorkingContacts() {
@@ -42,22 +59,28 @@ export class ContactsService {
         });
         this.formattedContacts.forEach((contact) => {
             formattedContactIds.push(contact.id);
-            if(!workingContactIds.includes(contact.id)) {
+            if(workingContactIds.indexOf(contact.id) === -1) {
                 // if there is a contact in 'formattedContacts' that is not in 'workingContacts'
                 // create a clone of the missing contact and add to the working contacts array
-                this.workingContacts.push(formatContacts([contact])[0]);
+                let contactClone: FormattedContact = {
+                    id: contact.id,
+                    displayName: contact.displayName,
+                    phoneNumbers: contact.phoneNumbers,
+                    selected: false
+                }
+                this.workingContacts.push(contactClone);
             }
         });
         for(let id of workingContactIds) {
             // walk through workingContactIds to find contacts which have been removed from the phone
-            if(!formattedContactIds.includes(id)) {
+            if(formattedContactIds.indexOf(id) === -1) {
                 // if a contact is dead, add the id to deadContactIds
                 deadContactIds.push(id);
             }
         }
         if(deadContactIds.length > 0) {
             this.workingContacts.forEach((contact) => {
-                if(!deadContactIds.includes(contact.id)) {
+                if(deadContactIds.indexOf(contact.id) === -1) {
                     updatedWorkingContacts.push(contact);
                 }
             });

@@ -32,8 +32,10 @@ export class EditNetView {
     }
 
     displayAddContactsModal() {
-
-        let modal = this.modalController.create(AddContactsView);
+        let params = {
+            workingContacts: (this.netService.selectedNet.contacts ? this.netService.selectedNet.contacts : [])
+        };
+        let modal = this.modalController.create(AddContactsView, params);
         modal.present();
     }
 

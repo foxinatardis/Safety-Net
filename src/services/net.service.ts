@@ -23,8 +23,7 @@ export class NetService {
         let newSafetyNet: INet = {
                 id: null,
                 name: 'My New Net',
-                displayedContacts: [],
-                contactNumbers: []
+                contacts: []
             };
         return newSafetyNet;
     }
@@ -35,13 +34,13 @@ export class NetService {
         console.log('retireving saved nets');
         console.log();
         this.storage.get('savedNets').then((nets) => {
-            if (!nets) {
+            // if (!nets) {
                 this.initializeSavedNets();
-            } else {
-                console.log('nets found!!!');
-                console.log();
-                this.savedNets = nets;
-            }
+            // } else {
+            //     console.log('nets found!!!');
+            //     console.log();
+            //     this.savedNets = nets;
+            // }
         });
     }
 
@@ -140,19 +139,7 @@ export class NetService {
         console.log();
         console.log('initializing...');
         console.log();
-        this.savedNets = [
-            {
-                id: 1,
-                name: 'You Suck!',
-                displayedContacts: [
-                    {
-                        name: 'Jon Bon Jovi',
-                        number: '774-573-1610'
-                    }
-                ],
-                contactNumbers: []
-            }
-        ];
+        this.savedNets = [];
 
         this.storage.set('savedNets', this.savedNets).then((val) => {
             console.log("savedNets initialized");
