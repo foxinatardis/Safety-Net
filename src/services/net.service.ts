@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { INet } from '../interfaces/net.interface';
-
+import { ContactsService } from './contacts.service';
 @Injectable()
 
 export class NetService {
@@ -11,7 +11,8 @@ export class NetService {
 
 
     constructor(
-        private storage: Storage
+        private storage: Storage,
+        private contactsService: ContactsService
     ) {
         this.storage.ready().then(() => {
             this.retrieveSavedNets();
@@ -81,6 +82,16 @@ export class NetService {
                 .then(this.savedSuccessfully(resolve))
                 .catch(this.saveFailed(reject));
         });
+    }
+
+    public cloneNet(net: INet) {
+        let clonedNet: INet = {
+            id: net.id,
+            name: net.name,
+            contacts: []
+        }
+        clonedNet.contacts = this.contactsService.cloneContacts(net.contacts);
+        return clonedNet;
     }
 
     private createUniqueNetId() {

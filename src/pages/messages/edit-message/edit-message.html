@@ -1,7 +1,24 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Edit Message
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-buttons>
+            <button ion-button icon-only color="dark" (click)="close()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Edit Message</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only color="dark" (click)="saveMessage()">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
+<ion-content padding>
+    <ion-item>
+        <ion-label>Message Name: </ion-label>
+        <ion-input type="text" [(ngModel)]="messageService.selectedMessage.title"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-textarea [(ngModel)]="messageService.selectedMessage.message"></ion-textarea>
+    </ion-item>
+</ion-content>

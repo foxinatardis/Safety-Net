@@ -17,7 +17,7 @@ export class EditNetView {
         public viewController: ViewController,
         public netService: NetService
     ) {
-        this.netService.selectedNet = this.navParams.data.net;
+        this.netService.selectedNet = this.netService.cloneNet(this.navParams.data.net);
     }
 
     close() {

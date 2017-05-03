@@ -8,8 +8,25 @@
 
 <ion-content padding>
     <ion-list>
+        <button ion-item (click)="displayEditMessagePopover(messageService.createNewMessage())">
+            Add New Message
+        </button>
         <div *ngFor="let message of messageService.customMessages">
-            <ion-item>{{message.title}}</ion-item>
+            <ion-item-sliding>
+                <ion-item  (click)="displayEditMessagePopover(message)">{{message.title}}</ion-item>
+                <ion-item-options side="right">
+                    <button ion-button color="danger" (click)="messageService.deleteMessage(message)">
+                        <ion-icon name="trash"></ion-icon>
+                        Delete
+                    </button>
+                </ion-item-options>
+                <ion-item-options side="left">
+                    <button ion-button color="primary" (click)="displayEditMessagePopover(message)">
+                        <ion-icon name="open"></ion-icon>
+                        Edit
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
         </div>
     </ion-list>
 </ion-content>

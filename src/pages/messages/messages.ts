@@ -17,4 +17,12 @@ export class MessagesPage {
 
   }
 
+  displayEditMessagePopover(message) {
+      let params = {
+          message: message
+      };
+      let modal = this.modalController.create(EditMessageView, params);
+      modal.present();
+  }
+
 }

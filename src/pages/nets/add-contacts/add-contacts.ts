@@ -27,9 +27,9 @@ export class AddContactsView {
     close() {
         this.contactService.markWorkingContactsAsSelected();
         this.netService.selectedNet.contacts = this.contactService.workingContacts;
-        this.netService.saveSelectedNet().then(() => {
+        // this.netService.saveSelectedNet().then(() => {
             this.viewController.dismiss();
-        });
+        // });
     }
 
 }

@@ -19,6 +19,33 @@ export class ContactsService {
     formattedContacts: Array<FormattedContact> = [];
     workingContacts: Array<FormattedContact> = [];
 
+    public cloneContacts(contacts: Array<FormattedContact>) {
+        let clonedContacts: Array<FormattedContact> = [];
+
+        contacts.forEach((contact) => {
+            let contactClone: FormattedContact = {
+                id: contact.id,
+                displayName: contact.displayName,
+                phoneNumbers: [],
+                selected: contact.selected
+            };
+
+            contact.phoneNumbers.forEach((numberField) => {
+                let numberFieldClone = {
+                    type: numberField.type,
+                    value: numberField.value,
+                    selected: numberField.selected
+                }
+
+                contactClone.phoneNumbers.push(numberFieldClone);
+            });
+
+            clonedContacts.push(contactClone);
+        });
+
+        return clonedContacts;
+    }
+
     private getFormattedContacts() {
         return new Promise((resolve, reject) => {
             this.getAllContacts()
