@@ -23,7 +23,7 @@ import { AddContactsView } from '../pages/nets/add-contacts/add-contacts';
 import { TimerPage } from '../pages/timer/timer';
 
 import { MessagesPage } from '../pages/messages/messages';
-import { EditMessageView } from '../pages/messages/messages/edit-message/edit-message';
+import { EditMessageView } from '../pages/messages/edit-message/edit-message';
 
 @NgModule({
   declarations: [
