@@ -35,6 +35,15 @@ export class MessagesService {
         });
     }
 
+    public selectMessageById(id: number) {
+        for(let i = 0; i < this.customMessages.length; i++) {
+            if(this.customMessages[i].id === id) {
+                this.selectedMessage = this.customMessages[i];
+                break;
+            }
+        }
+    }
+
     private initializeSavedMessages() {
         return new Promise((resolve, reject) => {
             this.storage.set('savedMessages', [])

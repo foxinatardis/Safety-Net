@@ -17,12 +17,39 @@ export class TimerPage {
         public messagesService: MessagesService,
         public netService: NetService
     ) {
+        this.hourOptions.length = 100;
+        this.minuteOptions.length = 60;
+        this.fillArrayIncrementally(this.hourOptions);
+        this.fillArrayIncrementally(this.minuteOptions);
 
     }
+    selectedNetId: number;
+    selectedMessageId: number;
+    hourOptions: Array<number> = [];
+    minuteOptions: Array<number> = [];
+    hourSelection: string;
+    minuteSelection: string;
 
-    startTimer() {
-        // stub
+    updateSelectionsAndStartTimer() {
+        this.netService.selectNetById(this.selectedNetId);
+        this.messagesService.selectMessageById(this.selectedMessageId);
+        this.startTimer();
+    }
 
+    private startTimer() {
+        let timerOptions: ITimerOptions = {
+            net: this.netService.selectedNet,
+            message: this.messagesService.selectedMessage,
+            hours: parseInt(this.hourSelection),
+            minutes: parseInt(this.minuteSelection)
+        };
+        this.timerService.startTimer(timerOptions);
+    }
+
+    private fillArrayIncrementally(arrayToFill: Array<number>) {
+        for(let i in arrayToFill) {
+            arrayToFill[i] = parseInt(i);
+        }
     }
 
 }

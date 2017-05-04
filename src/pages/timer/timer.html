@@ -8,33 +8,40 @@
 
 <ion-content>
     <div *ngIf="timerService.timerActive">
-
+        <h2>{{timerService.countdownHours}} : {{timerService.countdownMinutes}} : {{timerService.countdownSeconds}}</h2>
+        <button ion-button color="danger" (click)="timerService.cancelTimer()">Cancel Timer</button>
     </div>
     <div *ngIf="!timerService.timerActive">
         <ion-item>
             <ion-label>Safety Net</ion-label>
-            <ion-select [(ngModel)]="netService.selectedNet">
+            <ion-select [(ngModel)]="selectedNetId">
                 <div *ngFor="let net of netService.savedNets">
-                    <ion-option>{{net.name}}</ion-option>
+                    <ion-option [value]="net.id">{{net.name}}</ion-option>
                 </div>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Message</ion-label>
-            <ion-select [(ngModel)]="messagesService.selectedMessage">
+            <ion-select [(ngModel)]="selectedMessageId">
                 <div *ngFor="let message of messagesService.customMessages">
-                    <ion-option>{{message.title}}</ion-option>
+                    <ion-option [value]="message.id">{{message.title}}</ion-option>
                 </div>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Timer</ion-label>
-            <ion-select [(ngModel)]="">
-                <div *ngFor="">
-                    <ion-option></ion-option>
+            <ion-select [(ngModel)]="hourSelection">
+                <ion-label>Hours</ion-label>
+                <div *ngFor="let hour of hourOptions; let i = index;">
+                    <ion-option>{{i}} hours</ion-option>
+                </div>
+            </ion-select>
+            <ion-select [(ngModel)]="minuteSelection">
+                <div *ngFor="let minute of minuteOptions; let j = index;">
+                    <ion-option>{{j}} minutes</ion-option>
                 </div>
             </ion-select>
         </ion-item>
-        <button ion-button full (click)="startTimer()">Start Timer</button>
+        <button ion-button full (click)="updateSelectionsAndStartTimer()">Start Timer</button>
     </div>
 </ion-content>

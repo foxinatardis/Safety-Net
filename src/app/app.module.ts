@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
+import { SMS } from '@ionic-native/sms';
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //  Services
@@ -11,6 +13,7 @@ import { NetService } from '../services/net.service';
 import { ContactsService } from '../services/contacts.service';
 import { MessagesService } from '../services/messages.service';
 import { TimerService } from '../services/timer.service';
+import { SMSService } from '../services/sms.service';
 // App
 import { MyApp } from './app.component';
 // Pages and Views
@@ -19,7 +22,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { NetsPage } from '../pages/nets/nets';
 import { EditNetView } from '../pages/nets/edit-net/edit-net';
 import { AddContactsView } from '../pages/nets/add-contacts/add-contacts';
-
 
 import { TimerPage } from '../pages/timer/timer';
 
@@ -60,7 +62,10 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     ContactsService,
     MessagesService,
     TimerService,
+    SMSService,
     Contacts,
+    BackgroundMode,
+    SMS,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

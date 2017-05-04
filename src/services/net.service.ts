@@ -84,6 +84,15 @@ export class NetService {
         });
     }
 
+    public selectNetById(id: number) {
+        for(let i = 0; i < this.savedNets.length; i++) {
+            if(this.savedNets[i].id === id) {
+                this.selectedNet = this.savedNets[i];
+                break;
+            }
+        }
+    }
+
     public cloneNet(net: INet) {
         let clonedNet: INet = {
             id: net.id,

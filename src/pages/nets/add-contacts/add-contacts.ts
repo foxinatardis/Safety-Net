@@ -15,11 +15,22 @@ export class AddContactsView {
         public netService: NetService,
         public contactService: ContactsService
     ) {
+
+    }
+
+    ionViewDidLoad() {
+        console.log('View Loaded');
         this.contactService.workingContacts = this.navParams.data.workingContacts;
-        this.contactService.updateWorkingContacts();
-        this.displayPhoneNumbers.length = this.contactService.workingContacts.length;
-        console.log(this.contactService.workingContacts.length);
-        this.displayPhoneNumbers.fill(false);
+        this.contactService.updateWorkingContacts().then(() => {
+            this.displayPhoneNumbers.length = this.contactService.workingContacts.length;
+            console.log('working contacts updated!');
+            console.log();
+            console.log(this.contactService.workingContacts.length);
+            this.displayPhoneNumbers.fill(false);
+        }).catch((err) => {
+            console.log('error updating working contacts in add-contacts.ts');
+            console.log('error: ', err);
+        });
     }
 
     displayPhoneNumbers: any = [];

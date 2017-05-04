@@ -84,7 +84,9 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.3" />
+    <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
+    <plugin name="cordova-sms-plugin" spec="~0.1.11" />
     <plugin name="cordova-plugin-contacts" spec="~2.3.1">
-        <variable name="CONTACTS_USAGE_DESCRIPTION" value=" " />
+        <variable name="CONTACTS_USAGE_DESCRIPTION" value="Contacts are only used as specified by you to alert your location." />
     </plugin>
 </widget>
