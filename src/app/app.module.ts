@@ -15,10 +15,12 @@ import { ContactsService } from '../services/contacts.service';
 import { MessagesService } from '../services/messages.service';
 import { TimerService } from '../services/timer.service';
 import { SMSService } from '../services/sms.service';
+import { LocationService } from '../services/location.service';
 // App
 import { MyApp } from './app.component';
 // Pages and Views
 import { TabsPage } from '../pages/tabs/tabs';
+// import { PermissionCheckPopover } from '../pages/permissionChecks/permissionCheck';
 
 import { NetsPage } from '../pages/nets/nets';
 import { EditNetView } from '../pages/nets/edit-net/edit-net';
@@ -38,7 +40,8 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     TimerPage,
     MessagesPage,
     EditMessageView,
-    TabsPage
+    TabsPage,
+    // PermissionCheckPopover
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,8 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     TimerPage,
     MessagesPage,
     EditMessageView,
-    TabsPage
+    TabsPage,
+    // PermissionCheckPopover
   ],
   providers: [
     NetService,
@@ -64,6 +68,7 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     MessagesService,
     TimerService,
     SMSService,
+    LocationService,
     Contacts,
     BackgroundMode,
     SMS,

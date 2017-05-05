@@ -4,13 +4,15 @@ import { INet } from '../interfaces/net.interface';
 import { CustomMessage } from '../interfaces/customMessage.interface';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { SMSService } from './sms.service';
+import { LocationService } from './location.service';
 
 
 @Injectable()
 export class TimerService {
     constructor(
         private backgroundMode: BackgroundMode,
-        private smsService: SMSService
+        private smsService: SMSService,
+        private locationService: LocationService
     ) {
 
     }
@@ -23,7 +25,6 @@ export class TimerService {
     private activeTimer: number;
 
     public startTimer(options: ITimerOptions) {
-        console.log('starting timer');
         let selectedPhoneNumbers: Array<string>;
         let duration: number;
 
@@ -32,22 +33,21 @@ export class TimerService {
         this.countdownHours = Math.floor(duration / (1000 * 60 * 60));
         this.countdownMinutes = Math.floor(duration / 60000) % 60;
         this.countdownSeconds = Math.floor(duration / 1000) % 60;
-        // TODO remove duration reset below
-        duration = 5000;
         selectedPhoneNumbers = this.parseSelectedNumbersFromNet(options.net);
-        /* TODO still need to get location and append to message though that should
-        happen in the return function so location reflects
-        when message was sent not when timer was set */
+
         this.timerActive = true;
         this.activeTimer = setTimeout(() => {
-            this.sendAlert(selectedPhoneNumbers, options.message)
+            this.locationService.getCurrentLocation()
+            .then(() => {
+                let messageToSend = this.appendLocationToMessage(options.message);
+                this.sendAlert(selectedPhoneNumbers, messageToSend);
+            });
         }, duration);
         this.countdownInterval = setInterval(() => {
             duration -= 500;
             this.countdownHours = Math.floor(duration / (1000 * 60 * 60));
             this.countdownMinutes = Math.floor(duration / 60000) % 60;
             this.countdownSeconds = Math.floor(duration / 1000) % 60;
-            // console.log(this.activeTimer);
         }, 500)
 
     }
@@ -69,7 +69,6 @@ export class TimerService {
 
     private sendAlert(phoneNumbers: Array<string>, message: CustomMessage) {
         this.cancelTimer();
-        console.log('timer expired');
         this.smsService.sendMessage(phoneNumbers, message);
     }
 
@@ -92,13 +91,24 @@ export class TimerService {
                     });
                 }
             });
-            console.log('selectedPhoneNumbers: ' + selectedPhoneNumbers);
         } catch (err) {
             console.log('error parsing selected numbers');
             console.log('error: ' + err);
         }
 
         return selectedPhoneNumbers;
+    }
+
+    private appendLocationToMessage(message: CustomMessage) {
+        let googlemapsLinkText: string = 'https://www.google.com/maps/search/' + this.locationService.currentLatitude + '+' + this.locationService.currentLongitude;
+        let locationMessage: string = message.message + '\nMy last known location was: ' + googlemapsLinkText;
+        let messageToSend: CustomMessage = {
+            id: message.id,
+            title: message.title,
+            message: locationMessage
+        };
+
+        return messageToSend;
     }
 
 }

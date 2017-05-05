@@ -8,11 +8,7 @@ export class ContactsService {
     constructor(
         private contacts: Contacts
     ) {
-        // this.getFormattedContacts().catch((err) => {
-        //     console.log("Error gettign formatted contacts.");
-        //     console.log("error: " + err);
-        //     console.log();
-        // });
+
     }
 
     rawContacts: Array<Contact> = [];
@@ -47,7 +43,6 @@ export class ContactsService {
     }
 
     private getFormattedContacts() {
-        console.log('getting formatted contacts in contacts service');
         return new Promise((resolve, reject) => {
             this.getAllContacts()
             .then((allContacts: Array<Contact>) => {
@@ -60,7 +55,6 @@ export class ContactsService {
     }
 
     private getAllContacts() {
-        console.log('getting all contacts in contacts service');
         return new Promise((resolve, reject) => {
             let findOptions = {
                 multiple: true,
@@ -70,11 +64,9 @@ export class ContactsService {
                     'phoneNumbers'
                 ]
             };
-
             this.contacts.find(['name'], findOptions)
             .then((allContacts) => {
                 this.rawContacts = allContacts;
-
                 resolve(allContacts);
             }).catch((err) => {
                 reject(err);
@@ -83,12 +75,10 @@ export class ContactsService {
     }
 
     public updateWorkingContacts() {
-        console.log('updating working contacts in contacts service');
         return new Promise((resolve, reject) => {
             this.getFormattedContacts().then(() => {
                 let updatedWorkingContacts: Array<FormattedContact> = [];
                 let selectedPhoneNumbers: Array<string> = [];
-                console.log('below variable declarations in updateWorkingContacts');
                 this.workingContacts.forEach((contact) => {
                     contact.phoneNumbers.forEach((numberField) => {
                         if(numberField.selected) {
@@ -104,7 +94,6 @@ export class ContactsService {
                         phoneNumbers: [],
                         selected: false
                     };
-
                     contact.phoneNumbers.forEach((numberField) => {
                         let numberFieldClone = {
                             type: numberField.type,
@@ -117,22 +106,13 @@ export class ContactsService {
                         }
                         contactClone.phoneNumbers.push(numberFieldClone);
                     });
-
                     updatedWorkingContacts.push(contactClone);
                 });
-
                 this.workingContacts = updatedWorkingContacts;
             }).catch((err) => {
                 reject(err);
             });
         });
-        // if(this.formattedContacts.length > 0) {
-        //
-        // } else {
-        //     this.getFormattedContacts().then(() => {
-        //         this.updateWorkingContacts();
-        //     });
-        // }
     }
 
     public markWorkingContactsAsSelected() {
@@ -178,5 +158,20 @@ export class ContactsService {
         }
 
         return processedPhoneNumbers;
+    }
+
+    public checkPermission() {
+        return new Promise((resolve, reject) => {
+            this.getAllContacts().then(() => {
+                resolve();
+            }).catch((err) => {
+                if(err == 20) {
+                    console.error('no permission for contacts\n');
+                    throw ({permission: false});
+                } else {
+                    throw ({permission: true});
+                }
+            });
+        });
     }
 }
