@@ -6,6 +6,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
 import { SMS } from '@ionic-native/sms';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //  Services
@@ -66,6 +67,7 @@ import { EditMessageView } from '../pages/messages/edit-message/edit-message';
     Contacts,
     BackgroundMode,
     SMS,
+    Geolocation,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
