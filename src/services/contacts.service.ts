@@ -109,6 +109,7 @@ export class ContactsService {
                     updatedWorkingContacts.push(contactClone);
                 });
                 this.workingContacts = updatedWorkingContacts;
+                this.sortWorkingContacts();
             }).catch((err) => {
                 reject(err);
             });
@@ -175,5 +176,17 @@ export class ContactsService {
                 }
             });
         });
+    }
+
+    public sortWorkingContacts() {
+        this.workingContacts.sort((a, b) => {
+            if(a.displayName < b.displayName) {
+                return -1;
+            } else if (a.displayName > b.displayName) {
+                return 1;
+            } else {
+                return 0;
+            }
+        })
     }
 }
