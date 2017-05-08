@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, ViewController } from 'ionic-angular';
+import { ModalController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { NetService } from '../../../services/net.service';
 import { ContactsService } from '../../../services/contacts.service';
 
@@ -12,24 +12,27 @@ export class AddContactsView {
         public modalController: ModalController,
         public navParams: NavParams,
         public viewController: ViewController,
+        public loadingController: LoadingController,
         public netService: NetService,
         public contactService: ContactsService
     ) {
 
     }
 
+    loading = this.loadingController.create({
+        content: 'Loading Contacts',
+        spinner: 'circles'
+    })
+
     ionViewDidLoad() {
-        console.log('View Loaded');
+        this.loading.present();
         this.contactService.workingContacts = this.navParams.data.workingContacts;
         this.contactService.updateWorkingContacts().then(() => {
             this.displayPhoneNumbers.length = this.contactService.workingContacts.length;
-            console.log('working contacts updated!');
-            console.log();
-            console.log(this.contactService.workingContacts.length);
             this.displayPhoneNumbers.fill(false);
+            this.loading.dismiss();
         }).catch((err) => {
-            console.log('error updating working contacts in add-contacts.ts');
-            console.log('error: ', err);
+            // TODO notify user of error
         });
     }
 

@@ -110,6 +110,7 @@ export class ContactsService {
                 });
                 this.workingContacts = updatedWorkingContacts;
                 this.sortWorkingContacts();
+                resolve();
             }).catch((err) => {
                 reject(err);
             });
