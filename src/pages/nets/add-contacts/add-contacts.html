@@ -9,10 +9,14 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-searchbar
+        [(ngModel)]="filter"
+        (ionInput)="filterContacts($event)"
+    ></ion-searchbar>
     <ion-list>
         <ion-list-header>Contacts</ion-list-header>
         <div *ngFor="let contact of contactService.workingContacts; let i = index">
-            <ion-item (click)="displayPhoneNumbers[i] = !displayPhoneNumbers[i]">
+            <ion-item (click)="displayPhoneNumbers[i] = !displayPhoneNumbers[i]" *ngIf="displayContacts[i]">
                 {{contact.displayName}}
                 <ion-icon icon-right [name]="displayPhoneNumbers[i] ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
             </ion-item>

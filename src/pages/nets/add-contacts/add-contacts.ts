@@ -19,29 +19,54 @@ export class AddContactsView {
 
     }
 
-    loading = this.loadingController.create({
-        content: 'Loading Contacts',
-        spinner: 'circles'
-    })
+    loading;
+    displayPhoneNumbers: any = [];
+    displayContacts: any = [];
+    filter: string = '';
 
     ionViewDidLoad() {
-        this.loading.present();
+        this.showLoadingSpinner();
         this.contactService.workingContacts = this.navParams.data.workingContacts;
         this.contactService.updateWorkingContacts().then(() => {
             this.displayPhoneNumbers.length = this.contactService.workingContacts.length;
+            this.displayContacts.length = this.contactService.workingContacts.length;
             this.displayPhoneNumbers.fill(false);
-            this.loading.dismiss();
+            this.displayContacts.fill(true);
+            this.dismissLoadingSpinner();
         }).catch((err) => {
             // TODO notify user of error
         });
     }
 
-    displayPhoneNumbers: any = [];
+
 
     close() {
         this.contactService.markWorkingContactsAsSelected();
         this.netService.selectedNet.contacts = this.contactService.workingContacts;
         this.viewController.dismiss();
+    }
+
+    filterContacts() {
+        this.displayContacts.fill(true);
+        for(let i in this.contactService.workingContacts) {
+            let lowerCaseDisplayName = this.contactService.workingContacts[i].displayName.toLowerCase();
+            let filter = this.filter.toLowerCase();
+            if(lowerCaseDisplayName.indexOf(filter) === -1) {
+                this.displayContacts[i] = false;
+            }
+        }
+    }
+
+    showLoadingSpinner() {
+        this.loading = this.loadingController.create({
+            content: 'Loading Contacts',
+            spinner: 'circles'
+        });
+        this.loading.present();
+    }
+
+    dismissLoadingSpinner() {
+        this.loading.dismiss();
     }
 
 }
