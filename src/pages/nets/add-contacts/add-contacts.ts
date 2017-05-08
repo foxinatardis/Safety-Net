@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, ViewController, LoadingController } from 'ionic-angular';
+import { ModalController, NavParams, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { NetService } from '../../../services/net.service';
 import { ContactsService } from '../../../services/contacts.service';
 
@@ -14,7 +14,8 @@ export class AddContactsView {
         public viewController: ViewController,
         public loadingController: LoadingController,
         public netService: NetService,
-        public contactService: ContactsService
+        public contactService: ContactsService,
+        private alertController: AlertController
     ) {
 
     }
@@ -34,7 +35,13 @@ export class AddContactsView {
             this.displayContacts.fill(true);
             this.dismissLoadingSpinner();
         }).catch((err) => {
-            // TODO notify user of error
+            let errorAlert = this.alertController.create({
+                title: 'Oops...',
+                message: 'Something went wrong while retrieving your contacts.',
+                buttons: ['Dismiss']
+            });
+            this.dismissLoadingSpinner();
+            errorAlert.present();
         });
     }
 
