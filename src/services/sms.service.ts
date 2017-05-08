@@ -11,9 +11,16 @@ export class SMSService {
 
     }
 
-    public sendMessage(phoneNumbers: Array<string>, message: CustomMessage) {
-        this.sms.send(phoneNumbers, message.message).then(() => {
-            console.log('message sent successfullly');
+    public sendMessage(phoneNumber: string, message: CustomMessage) {
+        return new Promise((resolve, reject) => {
+            this.sms.send(phoneNumber, message.message)
+            .then(() => {
+                console.log('message sent successfullly');
+                resolve();
+            })
+            .catch((err) => {
+                reject(phoneNumber);
+            });
         });
     }
 

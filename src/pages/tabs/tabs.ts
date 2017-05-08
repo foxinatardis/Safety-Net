@@ -30,7 +30,7 @@ export class TabsPage {
       private smsService: SMSService,
       private timerService: TimerService,
       private locationService: LocationService,
-      public alertController: AlertController
+      private alertController: AlertController
   ) {
 
   }
