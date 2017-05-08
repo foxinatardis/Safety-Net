@@ -40,7 +40,6 @@ export class TabsPage {
     }
 
     checkAllPermissions() {
-
         this.locationService.checkPermission()
         .then(() => {
             return this.contactsService.checkPermission();
@@ -49,13 +48,6 @@ export class TabsPage {
             return this.smsService.checkPermission();
         })
         .catch((err) => {
-        //   let permissionCheckPopover = this.popoverController.create(PermissionCheckPopover, {}, popoverOptions);
-        //   permissionCheckPopover.onDidDismiss(() => {
-        //       this.checkAllPermissions();
-        //   });
-        //   permissionCheckPopover.present();
-        //     console.log('Inside tabs catch statement.\n');
-        //     console.log('err is:\n' + err);
             if(err.permission) {
                 return this.checkAllPermissions();
             } else {
@@ -69,9 +61,6 @@ export class TabsPage {
                 });
                 noPermissionAlert.present();
             }
-
         });
     }
-
-
 }
