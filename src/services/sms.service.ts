@@ -16,4 +16,26 @@ export class SMSService {
             console.log('message sent successfullly');
         });
     }
+
+    public checkPermission() {
+        return new Promise((resolve, reject) => {
+            this.sms.hasPermission()
+                .then((hasPermission) => {
+                    if(hasPermission) {
+                        resolve();
+                    } else {
+                        reject({
+                            permission: false,
+                            message: 'Safety Net needs access to SMS Services in order to alert your selected contacts.'
+                        });
+                    }
+                })
+                .catch((err) => {
+                    reject({
+                        permission: false,
+                        message: 'Safety Net needs access to SMS Services in order to alert your selected contacts.'
+                    });
+                });
+        });
+    }
 }

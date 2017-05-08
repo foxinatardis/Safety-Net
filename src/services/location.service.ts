@@ -14,7 +14,7 @@ export class LocationService {
     currentAltitude: number;
     geolocationOptions: {
         maximumAge: 0,
-        timeout: 10,
+        timeout: 1000,
         enableHighAccuracy: true
     };
 
@@ -44,12 +44,12 @@ export class LocationService {
             .catch((err) => {
                 if(err.code == 1) {
                     // permission denied stop the app until user grants permission
-                    console.error('no permission for location\n');
-                    throw ({permission: false});
+                    reject({
+                        permission: false,
+                        message: 'Safety Net needs access to Location Services in order to alert your selected contacts.'
+                    });
                 } else {
-                    console.error('error getting location, code: ' + err.code + '\n');
-                    console.log('\n');
-                    throw ({permission: true});
+                    reject({permission: true});
                 }
             });
         });

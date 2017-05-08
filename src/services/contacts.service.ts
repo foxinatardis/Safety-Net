@@ -166,10 +166,12 @@ export class ContactsService {
                 resolve();
             }).catch((err) => {
                 if(err == 20) {
-                    console.error('no permission for contacts\n');
-                    throw ({permission: false});
+                    reject({
+                        permission: false,
+                        message: 'Safety Net needs access to your Contacts in order to alert your selected contacts.'
+                    });
                 } else {
-                    throw ({permission: true});
+                    reject({permission: true});
                 }
             });
         });

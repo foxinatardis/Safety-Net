@@ -40,9 +40,13 @@ export class TabsPage {
     }
 
     checkAllPermissions() {
+
         this.locationService.checkPermission()
         .then(() => {
-            this.contactsService.checkPermission();
+            return this.contactsService.checkPermission();
+        })
+        .then(() => {
+            return this.smsService.checkPermission();
         })
         .catch((err) => {
         //   let permissionCheckPopover = this.popoverController.create(PermissionCheckPopover, {}, popoverOptions);
@@ -50,13 +54,14 @@ export class TabsPage {
         //       this.checkAllPermissions();
         //   });
         //   permissionCheckPopover.present();
-            console.log('err.permission is: ' + err.permission);
+        //     console.log('Inside tabs catch statement.\n');
+        //     console.log('err is:\n' + err);
             if(err.permission) {
                 return this.checkAllPermissions();
             } else {
                 let noPermissionAlert = this.alertController.create({
                     title: 'Permission Error',
-                    message: 'safetyNet needs permission to access your contacts as well as SMS and Location services.',
+                    message: err.message,
                     buttons: ['Dismiss']
                 });
                 noPermissionAlert.onDidDismiss(() => {
