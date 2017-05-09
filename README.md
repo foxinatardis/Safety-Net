@@ -1,5 +1,5 @@
 # safetyNet
-Emergency Contact Hybrid Mobile App
+Emergency Contact Android App built with Ionic
 
 ## What does it do?
 
