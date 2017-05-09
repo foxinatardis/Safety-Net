@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { TimerService } from '../../services/timer.service';
 import { MessagesService } from '../../services/messages.service';
 import { NetService } from '../../services/net.service';
@@ -15,8 +15,11 @@ export class TimerPage {
         public navCtrl: NavController,
         public timerService: TimerService,
         public messagesService: MessagesService,
-        public netService: NetService
+        public netService: NetService,
+        private alertController: AlertController
     ) {
+        this.netService.selectedNet = null;
+        this.messagesService.selectedMessage = null;
         this.hourOptions.length = 100;
         this.minuteOptions.length = 60;
         this.fillArrayIncrementally(this.hourOptions);
@@ -37,13 +40,25 @@ export class TimerPage {
     }
 
     private startTimer() {
-        let timerOptions: ITimerOptions = {
-            net: this.netService.selectedNet,
-            message: this.messagesService.selectedMessage,
-            hours: parseInt(this.hourSelection),
-            minutes: parseInt(this.minuteSelection)
-        };
-        this.timerService.startTimer(timerOptions);
+        let allFieldsSelected: boolean = !!(this.netService.selectedNet && this.messagesService.selectedMessage && this.hourSelection && this.minuteSelection);
+        if(allFieldsSelected) {
+            let timerOptions: ITimerOptions = {
+                net: this.netService.selectedNet,
+                message: this.messagesService.selectedMessage,
+                hours: parseInt(this.hourSelection),
+                minutes: parseInt(this.minuteSelection)
+            };
+
+            this.timerService.startTimer(timerOptions);
+        } else {
+            let selectAllFieldsAlert = this.alertController.create({
+                title: 'Missing Information',
+                message: 'Please select all required fields before starting a timer.',
+                buttons: ['Dismiss']
+            });
+
+            selectAllFieldsAlert.present();
+        }
     }
 
     private fillArrayIncrementally(arrayToFill: Array<number>) {
