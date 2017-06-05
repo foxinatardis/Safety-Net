@@ -7,9 +7,9 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf="timerService.timerActive">
+    <div class="activeTimer" *ngIf="timerService.timerActive">
         <h2>{{timerService.countdownHours}} : {{timerService.countdownMinutes}} : {{timerService.countdownSeconds}}</h2>
-        <button ion-button color="danger" (click)="timerService.cancelTimer()">Cancel Timer</button>
+        <button ion-button full color="danger" (click)="timerService.cancelTimer()">Cancel Timer</button>
     </div>
     <div *ngIf="!timerService.timerActive">
         <ion-item>
