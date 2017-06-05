@@ -1,13 +1,15 @@
 page-timer {
   .activeTimer {
     height: 10vh;
-    margin-top: 45vh;
-    margin-bottom: 45vh;
+    margin-top: 25vh;
 
     h2 {
-      color: #9900dd;
       text-align: center;
       font-size: 4em;
+    }
+
+    button {
+      margin-top: 15px;
     }
   }
 }
