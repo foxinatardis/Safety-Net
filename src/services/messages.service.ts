@@ -17,7 +17,7 @@ export class MessagesService {
         let newMessage: CustomMessage = {
             id: null,
             title: 'New Message',
-            message: 'Your content goes here...'
+            message: 'Create a custom message, a link to your location will be added to the end...'
         }
 
         return newMessage;
