@@ -20,44 +20,41 @@ export class TimerService {
     public countdownHours: number;
     public countdownMinutes: number;
     public countdownSeconds: number;
+    private timerDuration: number;
     private countdownInterval: number;
     public timerActive: boolean = false;
-    private activeTimer: number;
 
     public startTimer(options: ITimerOptions) {
         let selectedPhoneNumbers: Array<string>;
-        let duration: number;
 
         this.backgroundMode.enable();
-        duration = this.calculateDuration(options.hours, options.minutes);
-        this.countdownHours = Math.floor(duration / (1000 * 60 * 60));
-        this.countdownMinutes = Math.floor(duration / 60000) % 60;
-        this.countdownSeconds = Math.floor(duration / 1000) % 60;
+        this.timerDuration = this.calculateDuration(options.hours, options.minutes);
+        this.updateCountdownDisplay();
         selectedPhoneNumbers = this.parseSelectedNumbersFromNet(options.net);
 
         this.timerActive = true;
-        this.activeTimer = setTimeout(() => {
-            this.locationService.getCurrentLocation()
-            .then(() => {
-                console.log('got location\n');
-                let messageToSend = this.appendLocationToMessage(options.message);
-                this.sendAlert(selectedPhoneNumbers, messageToSend);
-            });
-        }, duration);
+
         this.countdownInterval = setInterval(() => {
-            duration -= 500;
-            this.countdownHours = Math.floor(duration / (1000 * 60 * 60));
-            this.countdownMinutes = Math.floor(duration / 60000) % 60;
-            this.countdownSeconds = Math.floor(duration / 1000) % 60;
-        }, 500)
+            this.timerDuration -= 500;
+            if(this.timerDuration > 0) {
+                this.updateCountdownDisplay();
+            } else {
+                this.handleFinishedTimer(options, selectedPhoneNumbers);
+            }
+        }, 500);
 
     }
 
     public cancelTimer() {
-        clearTimeout(this.activeTimer);
         clearInterval(this.countdownInterval);
         this.timerActive = false;
         this.backgroundMode.disable();
+    }
+
+    private updateCountdownDisplay() {
+        this.countdownHours = Math.floor(this.timerDuration / (1000 * 60 * 60));
+        this.countdownMinutes = Math.floor(this.timerDuration / 60000) % 60;
+        this.countdownSeconds = Math.floor(this.timerDuration / 1000) % 60;
     }
 
     private calculateDuration(hours: number, minutes: number) {
@@ -68,9 +65,16 @@ export class TimerService {
         return duration;
     }
 
-    private sendAlert(phoneNumbers: Array<string>, message: CustomMessage) {
-        console.log('sending alert\n');
+    private handleFinishedTimer(options: ITimerOptions, selectedPhoneNumbers: Array<string>) {
+        let messageToSend = this.appendLocationToMessage(options.message);
         this.cancelTimer();
+        this.locationService.getCurrentLocation()
+        .then(() => {
+            this.sendAlert(selectedPhoneNumbers, messageToSend);
+        })
+    }
+
+    private sendAlert(phoneNumbers: Array<string>, message: CustomMessage) {
         phoneNumbers.forEach((number) => {
             this.smsService.sendMessage(number, message);
         });
