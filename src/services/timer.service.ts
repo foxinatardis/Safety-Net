@@ -35,12 +35,11 @@ export class TimerService {
         this.countdownSeconds = Math.floor(duration / 1000) % 60;
         selectedPhoneNumbers = this.parseSelectedNumbersFromNet(options.net);
 
-        duration = 1000; //TODO remove this line
-
         this.timerActive = true;
         this.activeTimer = setTimeout(() => {
             this.locationService.getCurrentLocation()
             .then(() => {
+                console.log('got location\n');
                 let messageToSend = this.appendLocationToMessage(options.message);
                 this.sendAlert(selectedPhoneNumbers, messageToSend);
             });
@@ -70,6 +69,7 @@ export class TimerService {
     }
 
     private sendAlert(phoneNumbers: Array<string>, message: CustomMessage) {
+        console.log('sending alert\n');
         this.cancelTimer();
         phoneNumbers.forEach((number) => {
             this.smsService.sendMessage(number, message);
