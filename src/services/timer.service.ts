@@ -66,11 +66,14 @@ export class TimerService {
     }
 
     private handleFinishedTimer(options: ITimerOptions, selectedPhoneNumbers: Array<string>) {
-        let messageToSend = this.appendLocationToMessage(options.message);
+        let messageToSend;
         this.cancelTimer();
         this.locationService.getCurrentLocation()
         .then(() => {
+            messageToSend = this.appendLocationToMessage(options.message);
             this.sendAlert(selectedPhoneNumbers, messageToSend);
+        }).catch(err => {
+            this.handleFinishedTimer(options, selectedPhoneNumbers);
         })
     }
 

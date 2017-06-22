@@ -4,7 +4,6 @@ import { AlertController } from 'ionic-angular';
 import { NetsPage } from '../nets/nets';
 import { TimerPage } from '../timer/timer';
 import { MessagesPage } from '../messages/messages';
-// import { PermissionCheckPopover } from '../permissionChecks/permissionCheck';
 
 import { ContactsService } from '../../services/contacts.service';
 import { MessagesService } from '../../services/messages.service';
@@ -50,6 +49,17 @@ export class TabsPage {
         .catch((err) => {
             if(err.permission) {
                 return this.checkAllPermissions();
+            } else if(err.smsTest) {
+                this.smsService.promptForTestMessage()
+                .then(() => {
+                    return this.smsService.sendTestMessage();
+                })
+                .then(() => {
+                    return this.checkAllPermissions();
+                })
+                .catch((err) => {
+                    this.checkAllPermissions();
+                });
             } else {
                 let noPermissionAlert = this.alertController.create({
                     title: 'Permission Error',

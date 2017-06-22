@@ -37,7 +37,7 @@ export class LocationService {
 
     checkPermission() {
         return new Promise((resolve, reject) => {
-            this.getCurrentLocation()
+            this.geolocation.getCurrentPosition(this.geolocationOptions)
             .then(() => {
                 resolve();
             })
