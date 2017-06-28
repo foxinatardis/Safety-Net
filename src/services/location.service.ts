@@ -14,7 +14,7 @@ export class LocationService {
     currentAltitude: number;
     geolocationOptions: {
         maximumAge: 0,
-        timeout: 1000,
+        timeout: 3000,
         enableHighAccuracy: true
     };
 

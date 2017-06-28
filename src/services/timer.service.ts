@@ -66,12 +66,14 @@ export class TimerService {
     }
 
     private handleFinishedTimer(options: ITimerOptions, selectedPhoneNumbers: Array<string>) {
-        let messageToSend;
+        let messageToSend = options.message;
+        let locationMessage;
         this.cancelTimer();
         this.locationService.getCurrentLocation()
         .then(() => {
-            messageToSend = this.appendLocationToMessage(options.message);
+            locationMessage = this.createLocationMessage();
             this.sendAlert(selectedPhoneNumbers, messageToSend);
+            this.sendAlert(selectedPhoneNumbers, locationMessage);
         }).catch(err => {
             this.handleFinishedTimer(options, selectedPhoneNumbers);
         })
@@ -110,13 +112,12 @@ export class TimerService {
         return selectedPhoneNumbers;
     }
 
-    private appendLocationToMessage(message: CustomMessage) {
+    private createLocationMessage() {
         let googlemapsLinkText: string = 'https://www.google.com/maps/search/' + this.locationService.currentLatitude + '+' + this.locationService.currentLongitude;
-        let locationMessage: string = message.message + '\nMy last known location was: ' + googlemapsLinkText;
         let messageToSend: CustomMessage = {
-            id: message.id,
-            title: message.title,
-            message: locationMessage
+            id: 1,
+            title: 'Google Maps Link',
+            message: googlemapsLinkText 
         };
 
         return messageToSend;

@@ -1,5 +1,5 @@
 <?xml version="1.1" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.safetynet875935" version="2.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.safetynet875935" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>SafetyNet</name>
   <description>Let contacts know you need help</description>
   <author email="foxinatardis@gmail.com" href="http://adamb.me">Adam Belliveau</author>
